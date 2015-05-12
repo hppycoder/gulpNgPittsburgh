@@ -52,40 +52,47 @@
     <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
         <section>
-            <h1>Building without boundaries</h1>
+            <h1>Building without boundaries with Gulp</h1>
 
-            <h3>A presentation about Gulp</h3>
-
-            <p>
-                <small>Created by: Chad Smith</small>
-            </p>
+            <aside class="notes">
+                <strong>Thanks for having me ngPittsburgh!</strong>
+                <ul>
+                    <li>Absolutely great to be here!</li>
+                    <li>I wanted to give a presentation on how my team at GiftCards.com is using Gulp in our production environment</li>
+                    <li>The code presented in this presentation is 100% used in our daily builds</li>
+                    <li>Gulp is great in that it gives way to a whole new exciting experience! You don't need to do manual work for minifcation, or the dull tasks that you should already be doing!</li>
+                    <li>This talk is going to be for everyone, but I have geared specific examples for AngularJS.</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <h2>Why Use a build tool?</h2>
+            <ul>
+                <li>Automation</li>
+                <li>Predictability</li>
+                <li>Performance</li>
+            </ul>
+            <aside class="notes">
+                <strong>Developers have to do a LOT!</strong>
+                <ul>
+                    <li>We have to focus on performance, scalability, and we have to make our clients/customers happy.</li>
+                    <li>We have to make sure that our code doesn't get penalized by Google</li>
+                    <li>We have to make it easier to develop!</li>
+                    <li>We have to do all these things that are changing all the time</li>
+                    <li>We <strong>know</strong> what we should do, but we need something that we automate</li>
+                </ul>
+            </aside>
         </section>
 
         <section>
-            <h2>Who am I?</h2>
-
-            <p>Chad Smith (@hppycoder)<br />Software Development Manager for GiftCards.com</p>
-            <aside class="notes">
-                <strong>Pleased to meet everyone!</strong>
-                <ul>
-                    <li>My name is Chad Smith, and I am the software development manager for the front end group at
-                        GiftCards.com!
-                    </li>
-                    <li>We developed an application that allows users to upload their photos and have them be printed
-                        onto a Giftcard. Yes, even you could have your face be on a VISA gift card.
-                    </li>
-                    <li>The talk today will center around how my team and I reshaped our Flash application and used
-                        HTML5 to do all the work.
-                    </li>
-                </ul>
-            </aside>
+            <img src="images/gulp-2x.png">
         </section>
 
         <section>
             <h2>What is Gulp?</h2>
             <ul>
                 <li>Built with Node</li>
-                <li>Processes in memory instead of the filesystem</li>
+                <li>Memory instead of disk</li>
                 <li>Runs asynchronously</li>
                 <li>Uses a Vinyl architecture</li>
             </ul>
@@ -95,7 +102,7 @@
 
         <section>
             <section>
-                <h2>Getting Started</h2>
+                <h2>Getting Setup</h2>
                 <p>Install Gulp globally</p>
                 <pre><code data-trim contenteditable>
 $ npm install -g gulp
@@ -133,6 +140,14 @@ gulp.task('dev', ['bower']);
         </section>
 
         <section>
+            <h2>Getting Started</h2>
+            <ul>
+                <li>Plan ahead</li>
+                <li>File writing strategy</li>
+                <li>Link to build plan</li>
+            </ul>
+        </section>
+        <section>
             <h2>Plan Ahead</h2>
             <ul>
                 <li>List what you want automated</li>
@@ -141,6 +156,22 @@ gulp.task('dev', ['bower']);
                 <li>Start making your Gulpfile</li>
                 <li>Train team (if applicable) on changes</li>
                 <li>Link into Deployment process</li>
+            </ul>
+        </section>
+        <section>
+            <h2>File Writing Strategy</h2>
+            <ul>
+                <li>Move files</li>
+                <li>Overwrite sources</li>
+                <li>Add to sources</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Link to Build Plan</h2>
+            <ul>
+                <li>How will gulp run?</li>
+                <li>Error handling</li>
+                <li>Automation</li>
             </ul>
         </section>
 
