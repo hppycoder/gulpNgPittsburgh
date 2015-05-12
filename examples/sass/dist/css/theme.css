@@ -1,0 +1,29 @@
+/* line 1, ../../sass/partials/_buttons.scss */
+.btn-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 0;
+}
+/* line 11, ../../sass/partials/_buttons.scss */
+.btn-icon span {
+  color: #ccc;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+/* line 20, ../../sass/partials/_buttons.scss */
+.btn-icon:focus, .btn-icon:active:focus, .btn-icon.active:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+/* line 29, ../../sass/partials/_buttons.scss */
+.btn-icon[disabled] {
+  cursor: not-allowed;
+  background-color: #999999;
+  opacity: 1;
+}

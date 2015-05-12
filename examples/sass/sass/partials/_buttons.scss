@@ -1,0 +1,34 @@
+.btn-icon{
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 0;
+
+  span{
+    color:  #ccc;
+    font-size: 1.1em;
+    vertical-align: middle;
+  }
+
+  &,
+  &:active,
+  &.active {
+    &:focus {
+      // Default
+      outline: thin dotted;
+      // WebKit
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px;
+    }
+  }
+
+  &[disabled]{
+    cursor: not-allowed;
+    background-color: #999999;
+    opacity: 1; // iOS fix for unreadable disabled content
+  }
+}
