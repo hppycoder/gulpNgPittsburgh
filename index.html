@@ -478,7 +478,7 @@ gulp.task('minifyCSS', ['cardBuildLess'], function () {
 
 <footer>
     <p>
-        <strong>Slides</strong> https://github.com/hppycoder/gulpNgPittsburgh<br>
+        <strong>Slides</strong> http://hppycoder.github.io/gulpNgPittsburgh<br>
         Chad Smith | @hppycoder | chad.smith@giftcards.com<br>
     </p>
 
@@ -504,16 +504,6 @@ gulp.task('minifyCSS', ['cardBuildLess'], function () {
             {
                 src: 'lib/js/classList.js', condition: function () {
                 return !document.body.classList;
-            }
-            },
-            {
-                src: 'plugin/markdown/marked.js', condition: function () {
-                return !!document.querySelector('[data-markdown]');
-            }
-            },
-            {
-                src: 'plugin/markdown/markdown.js', condition: function () {
-                return !!document.querySelector('[data-markdown]');
             }
             },
             {
