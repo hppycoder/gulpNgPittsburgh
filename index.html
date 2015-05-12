@@ -85,26 +85,64 @@
         </section>
 
         <section>
-            <img src="images/gulp-2x.png">
+            <h2>What is Gulp?</h2>
+            <div>
+                <div style="float:left; width:60%;">
+                    <ul>
+                        <li>Built with Node</li>
+                        <li>Memory instead of disk</li>
+                        <li>Runs asynchronously</li>
+                        <li>Uses the Vinyl architecture</li>
+                    </ul>
+                </div>
+                <div style="float:left; width:40%">
+                    <img src="images/gulp-2x.png" style="width:25%; border: none; box-shadow:none;" />
+                </div>
+            </div>
+
+            <aside class="notes">Gulp is a Node based build system built on extensibility and efficiency. It has hundreds of downloads an hour on the NPM network and most of what you have done with Grunt can be converted to Gulp.</aside>
         </section>
 
         <section>
-            <h2>What is Gulp?</h2>
+            <h2>Getting Started</h2>
             <ul>
-                <li>Built with Node</li>
-                <li>Memory instead of disk</li>
-                <li>Runs asynchronously</li>
-                <li>Uses a Vinyl architecture</li>
+                <li>Planning ahead</li>
+                <li>File writing strategy</li>
+                <li>Deployment Strategy</li>
             </ul>
-
-            <aside class="notes">Gulp is a Node based build system built on extensibility and efficiency. It has hundreds of downloads an hour on the NPM network and most of what you have done with Grunt can be converted to Gulp.</aside>
+        </section>
+        <section>
+            <h2>Plannings Ahead</h2>
+            <ul>
+                <li>List what you want automated</li>
+                <li>Find modules to help with automation</li>
+                <li>What is considered a &quot;Failed&quot; build</li>
+                <li>Start making your Gulpfile</li>
+                <li>Train team (if applicable) on changes</li>
+            </ul>
+        </section>
+        <section>
+            <h2>File Writing Strategy</h2>
+            <ul>
+                <li>Move files</li>
+                <li>Overwrite sources</li>
+                <li>Add to sources</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Deployment Process</h2>
+            <ul>
+                <li>What will run gulp?</li>
+                <li>Error handling</li>
+                <li>Automation</li>
+            </ul>
         </section>
 
         <section>
             <section>
                 <h2>Getting Setup</h2>
                 <p>Install Gulp globally</p>
-                <pre><code data-trim contenteditable>
+                <pre><code>
 $ npm install -g gulp
                 </code></pre>
             </section>
@@ -117,62 +155,22 @@ $ npm install -g gulp
   "dependencies": {
     "gulp": "^3.8.10",
     "gulp-bower": "~0.0.6"
-  },
-  "engines": {
-    "node": ">=0.10.0"
   }
 }
-                </code></pre>
+                    </code></pre>
             </section>
             <section>
                 <h2>Sample gulpfile.js</h2>
                 <pre><code>
-'use strict';
-
 var gulp = require('gulp');
-var appDestPath = './cart/bower_components';
-gulp.task('bower', function () {
-  return bower().pipe(gulp.dest(appDestPath));
-});
-gulp.task('dev', ['bower']);
-                </code></pre>
-            </section>
-        </section>
 
-        <section>
-            <h2>Getting Started</h2>
-            <ul>
-                <li>Plan ahead</li>
-                <li>File writing strategy</li>
-                <li>Link to build plan</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Plan Ahead</h2>
-            <ul>
-                <li>List what you want automated</li>
-                <li>Find modules to help with automation</li>
-                <li>What is considered a &quot;Failed&quot; build</li>
-                <li>Start making your Gulpfile</li>
-                <li>Train team (if applicable) on changes</li>
-                <li>Link into Deployment process</li>
-            </ul>
-        </section>
-        <section>
-            <h2>File Writing Strategy</h2>
-            <ul>
-                <li>Move files</li>
-                <li>Overwrite sources</li>
-                <li>Add to sources</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Link to Build Plan</h2>
-            <ul>
-                <li>How will gulp be ran?</li>
-                <li>Error handling</li>
-                <li>Automation</li>
-            </ul>
+gulp.task('moveFiles', function () {
+  return gulp.src('./src/js/**/*.js').pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('dev', ['moveFiles']);
+                    </code></pre>
+            </section>
         </section>
 
         <section>
@@ -219,29 +217,29 @@ gulp.src([
                     <li>Cannot contain spaces</li>
                     <li>Returns when completed</li>
                     <li>Can be used as a dependency for other tasks</li>
+                    <li><strong>Must have a return</strong></li>
                 </ul>
                 <pre><code>
-gulp.task('bower', function () {
-  return bower().pipe(gulp.dest('./bower_components'));
+gulp.task(name, [], function() {
+  return;
 });
-gulp.task('dev', ['bower']);
                     </code></pre>
             </section>
             <section>
                 <h2>Dependencies</h2>
 
                 <pre><code>
-var gulp = require('gulp');
-var clean = require('gulp-clean');
-var bower = require('gulp-bower');
+var gulp = require('gulp'),
+    clean = require('gulp-clean'),
+    bower = require('gulp-bower');
 
 gulp.task('cleanDist', function() {
   return gulp.src('./dist/**').pipe(clean());
 });
-gulp.task('bower', function ('cleanDist') {
-  return bower().pipe(gulp.dest('./bower_components'));
+gulp.task('distMove', ['cleanDist'], function () {
+  return gulp.src('./js/**/*.js').pipe(gulp.dest('./dist/js'));
 });
-gulp.task('dev', ['bower']);
+gulp.task('build', ['cleanDist','distMove']);
                 </code></pre>
             </section>
             <section>
@@ -291,6 +289,29 @@ gulp.task('compass', function () {
             </code></pre>
         </section>
         <section>
+            <h2>Minify CSS</h2>
+            <p>Thin wrapper to clean-css which optimizes CSS files</p>
+            <pre><code>
+var minifyCSS = require('gulp-minify-css');
+gulp.task('minifyCSS', ['cardBuildLess'], function () {
+  return gulp.src('./htdocs/css/**/*.css')
+    .pipe(minifyCSS())
+    .pipe(gulp.dest('./htdocs/css'));
+});
+                </code></pre>
+        </section>
+        <section>
+            <h2>Gulp Watch</h2>
+            <pre><code>
+var minifyCSS = require('gulp-minify-css');
+gulp.task('minifyCSS', ['cardBuildLess'], function () {
+return gulp.src('./htdocs/css/**/*.css')
+.pipe(minifyCSS())
+.pipe(gulp.dest('./htdocs/css'));
+});
+                </code></pre>
+        </section>
+        <section>
             <h2>Bower</h2>
             <p>Runs `bower install` with provided arguments and options. Returns Vinyl Stream with created files.</p>
             <pre><code>
@@ -337,17 +358,24 @@ if (argv.ver) {
             </section>
         </section>
         <section>
-            <h2>Merge</h2>
+            <h2>Merge Stream</h2>
             <p>Merges multiple process streams together and will finalize task when all streams are complete.</p>
-            <pre><code>
+            <div>
+                <div style="float:left; width:60%">
+                    <pre><code>
 var merge = require('merge-stream');
-gulp.task('bower', function () {
+gulp.task('moveFiles', function () {
   return merge(
-    gulp.src('./htdocs/js-app/**').pipe(gulp.dest('./dist/js-app')),
-    gulp.src('./htdocs/cart/**').pipe(gulp.dest('./dist/cart'))
+    gulp.src('./js/**').pipe(gulp.dest('./dist/js')),
+    gulp.src('./css/**').pipe(gulp.dest('./dist/css'))
   );
 });
-            </code></pre>
+                    </code></pre>
+                </div>
+                <div style="float:left; width:40%">
+                    <img src="images/mergeStreams.gif" style="border: none; box-shadow:none;" />
+                </div>
+            </div>
         </section>
         <section>
             <h2 style="text-transform: none;">ngAnnotate</h2>
@@ -380,7 +408,7 @@ gulp.task('cardBuildE2ETests', function() {
             </code></pre>
         </section>
         <section>
-            <h2>Unit Tests</h2>
+            <h2>Karma Unit Tests</h2>
             <p>Modules: <em>karma</em>, <em>karma-jasmine</em>, <em>karma-phantomjs-launcher</em>, <em>karma-ng-html2js-preprocessor</em></p>
             <pre><code>
 gulp.task('cardBuildUnitTests', ['bower'], function(done) {
@@ -394,19 +422,6 @@ gulp.task('cardBuildUnitTests', ['bower'], function(done) {
 });
             </code></pre>
         </section>
-        <section>
-            <h2>Minify CSS</h2>
-            <p>Thin wrapper to clean-css which optimizes CSS files</p>
-            <pre><code>
-var minifyCSS = require('gulp-minify-css');
-gulp.task('minifyCSS', ['cardBuildLess'], function () {
-  return gulp.src('./htdocs/css/**/*.css')
-    .pipe(minifyCSS())
-    .pipe(gulp.dest('./htdocs/css'));
-});
-            </code></pre>
-        </section>
-
         <section>
             <h2>Downside to Gulp</h2>
             <ul>
@@ -468,7 +483,7 @@ gulp.task('minifyCSS', ['cardBuildLess'], function () {
 
             </section>
             <section>
-                <img src="images/question.gif" />
+                <img src="images/question.gif" style="border: none; box-shadow:none;" />
             </section>
         </section>
 
