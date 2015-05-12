@@ -61,4 +61,4 @@ AC02LR03FFT4P:bower chadsmith$ gulp build-advanced
 ```
 
 ## Finished Product
-You can now look in the folder and see there's two folders. The first is in the root directory named ```bower_components``` that contains the installed items from bower in the root ```bower.json``` file. The second folder is in ```cart/bower_components``` which is from the ```cart/bower.json``` file.
+You can now look in the folder and see there's two new folders. The first is in the root directory named ```bower_components``` that contains the installed items from bower in the root ```bower.json``` file. The second folder is in ```cart/bower_components``` which is from the ```cart/bower.json``` file.
