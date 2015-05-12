@@ -1,0 +1,11 @@
+{
+  "name": "example-protractor",
+  "version": "0.0.1",
+  "dependencies": {
+    "gulp": "^3.8.10"
+  },
+  "devDependencies": {
+    "gulp-protractor": "~1.0",
+    "protractor": "~2.0"
+  }
+}
