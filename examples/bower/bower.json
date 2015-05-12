@@ -1,0 +1,9 @@
+{
+  "name": "example-bower",
+  "version": "1.0.0",
+  "dependencies": {
+    "jquery": ">=1.9.0 <2.0.0",
+    "loadcss": "~0.1.1",
+    "hideShowPassword": "2.0.3"
+  }
+}
