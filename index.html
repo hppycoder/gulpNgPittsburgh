@@ -91,6 +91,7 @@
                         <li>Memory</li>
                         <li>Asynchronous</li>
                         <li>Extensible</li>
+                        <li>5,740+ modules</li>
                     </ul>
                 </div>
                 <div style="float:left; width:40%">
@@ -185,8 +186,9 @@ gulp.task('dev', ['moveFiles']);
                     <li><strong>Must have a return</strong></li>
                 </ul>
                 <pre><code>
+var gulp = require('gulp');
 gulp.task(name, [], function() {
-    return;
+    return gulp.src(...).pipe(....);
 });
                     </code></pre>
             </section>
@@ -200,7 +202,6 @@ gulp.task(name, [], function() {
                 </ul>
                 <pre><code>
 gulp.src([
-  './scripts/**',
   './htdocs/+(app|fonts|js|css)/**',
   '!./htdocs/js/yui/**'
 ], {read: false})
@@ -233,8 +234,7 @@ gulp.src('./js/**/*.js')
 
                 <pre><code>
 var gulp = require('gulp'),
-    clean = require('gulp-clean'),
-    bower = require('gulp-bower');
+    clean = require('gulp-clean');
 
 gulp.task('cleanDist', function() {
   return gulp.src('./dist/**').pipe(clean());
@@ -275,20 +275,31 @@ gulp.task('annotateCardBuild', function() {
 
         <section>
             <h2>Gulp Watch</h2>
-            <p>Given a glob pattern Gulp can run tasks when a file in the pattern changes.</p>
+            <p>Given a glob pattern Gulp can run tasks when a file changes.</p>
+            <p><strong>Once watch starts, new files will not be added.</strong></p>
             <pre><code>
+var gulp = require('gulp');
 gulp.task('watch', function () {
   gulp.watch('./sass/**/*.scss', ['compass', 'inject-dev']);
   gulp.watch('./js/**/*.js', ['minify-js', 'inject-dev']);
 });
             </code></pre>
+            <aside class="notes">
+                <h3>WHY?</h3>
+                <ul>
+                    <li>Could keep all the code updated</li>
+                    <li>Changes to JS could run jshint, karma, etc</li>
+                    <li>Could recompile all the CSS</li>
+                </ul>
+            </aside>
         </section>
 
         <section>
             <h2>CSS Compilation</h2>
             <p>Compile all your CSS with your favorite pre-processor!</p>
             <pre><code>
-var plumber = require('gulp-plumber'),
+var gulp = require('gulp'),
+    plumber = require('gulp-plumber'),
     compass = require('gulp-compass');
 
 gulp.task('compass', function () {
@@ -301,6 +312,14 @@ gulp.task('compass', function () {
     .pipe(gulp.dest('dist/css'));
 });
             </code></pre>
+
+            <aside class="notes">
+            <h3>WHY?</h3>
+            <ul>
+                <li>Want all your CSS to use something like SASS or LESS</li>
+                <li>Gives designers more control using a pre-processor</li>
+            </ul>
+            </aside>
         </section>
         <section>
             <h2>Minify CSS</h2>
@@ -312,7 +331,13 @@ gulp.task('minifyCSS', ['cardBuildLess'], function () {
     .pipe(minifyCSS())
     .pipe(gulp.dest('./htdocs/css'));
 });
-                </code></pre>
+            </code></pre>
+            <aside class="notes">
+                <h3>WHY?</h3>
+                <ul>
+                    <li>Smaller CSS files decreases bandwidth</li>
+                </ul>
+            </aside>
         </section>
         <section>
             <h2>Bower</h2>
@@ -376,17 +401,20 @@ gulp.task('moveFiles', function () {
                     </code></pre>
                 </div>
                 <div style="float:left; width:40%">
-                    <img src="images/mergeStreams.gif" style="border: none; box-shadow:none;" />
+                    <img src="images/mergeStreams.gif" style="border: none; box-shadow:none;" alt="" />
                 </div>
             </div>
         </section>
         <section>
             <h2 style="text-transform: none;">ngAnnotate</h2>
-            <p>This plugin will rewrite the AngularJS compiler passes to allow for concatenation and minifcation. Otherwise the DI container would be broken due to minified code.</p>
+            <p>This plugin will rewrite the AngularJS compiler passes to allow for the code to Uglified.</p>
             <p><strong>Formerly named: ngmin</strong></p>
             <pre><code>
-var ngAnnotate = require('gulp-ng-annotate');
-gulp.task('annotateCardBuild', ['buildCardBuildAssets'], function() {
+var gulp = require('gulp'),
+    ngAnnotate = require('gulp-ng-annotate'),
+    uglify = require('gulp-uglify');
+
+gulp.task('annotateBuild', ['buildAssets'], function() {
 return gulp.src(cardBuildDistPath + '/cardBuild/buildApp.js')
   .pipe(ngAnnotate())
   .pipe(uglify())
@@ -398,7 +426,8 @@ return gulp.src(cardBuildDistPath + '/cardBuild/buildApp.js')
             <h2>Protractor</h2>
             <p>Have all your Protractor tests run with Gulp and provide feedback for failed builds.</p>
             <pre><code>
-var cardBuildSrcPath = './src/AppBundle/Resources/js-app/cardbuild';
+var gulp = require('gulp');
+var cardBuildSrcPath = './src/cardbuild';
 gulp.task('cardBuildE2ETests', function() {
   var protractor = require('gulp-protractor').protractor;
   gulp.src([cardBuildBasePath + '/test/e2e/*.js'])
@@ -414,6 +443,7 @@ gulp.task('cardBuildE2ETests', function() {
             <h2>Karma Unit Tests</h2>
             <p>Modules: <em>karma</em>, <em>karma-jasmine</em>, <em>karma-phantomjs-launcher</em>, <em>karma-ng-html2js-preprocessor</em></p>
             <pre><code>
+var gulp = require('gulp');
 gulp.task('cardBuildUnitTests', ['bower'], function(done) {
   var karma = require('karma').server;
   karma.start({
@@ -426,7 +456,27 @@ gulp.task('cardBuildUnitTests', ['bower'], function(done) {
             </code></pre>
         </section>
         <section>
-            <h2>Downside to Gulp</h2>
+            <h2>WHAT ELSE CAN IT DO?</h2>
+            <div>
+                <div style="float:left; width:70%;">
+                    <ul>
+                        <li>Deploy to your CDN (Cloudfiles,S3)</li>
+                        <li>Run performance tests (psi)</li>
+                        <li>Minify images! (gulp-imagemin)</li>
+                        <li>Find unused CSS! (gulp-uncss)</li>
+                        <li>Concatenate files (gulp-concat)</li>
+                        <li>Auto-prefix CSS (gulp-autoprefixer)</li>
+                        <li>SourceMap's? Oh yeah. (gulp-sourcemaps)</li>
+                        <li>5,700+ other options!</li>
+                    </ul>
+                </div>
+                <div style="float:left; width:30%">
+                    <img src="images/oprah-screaming-gif.gif" style="border: none; box-shadow: none;" />
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>Gulp's Scary Side</h2>
             <div>
                 <div style="float:left; width:60%;">
                     <ul>
@@ -478,7 +528,7 @@ gulp.task('cardBuildUnitTests', ['bower'], function(done) {
 
             <p style="color:#fff; padding-top:40px;">
                 Chad Smith<br>
-                Software Development Manager - Front-end<br>
+                Software Development Manager<br>
                 chad.smith@giftcards.com<br>
                 @hppycoder<br>
                 <img src="images/GKnockout.png" style="border:0; background:initial; box-shadow: none;">
@@ -501,7 +551,8 @@ gulp.task('cardBuildUnitTests', ['bower'], function(done) {
 
 <footer>
     <p>
-        <strong>Slides</strong> http://hppycoder.github.io/gulpNgPittsburgh<br>
+        Examples: https://github.com/hppycoder/gulpNgPittsburgh<br>
+        Slides: http://hppycoder.github.io/gulpNgPittsburgh<br>
         Chad Smith | @hppycoder | chad.smith@giftcards.com<br>
     </p>
 
