@@ -89,14 +89,14 @@
             <div>
                 <div style="float:left; width:60%;">
                     <ul>
-                        <li>Built with Node</li>
-                        <li>Memory instead of disk</li>
-                        <li>Runs asynchronously</li>
-                        <li>Uses the Vinyl architecture</li>
+                        <li>Node</li>
+                        <li>Memory</li>
+                        <li>Asynchronous</li>
+                        <li>Extensible</li>
                     </ul>
                 </div>
                 <div style="float:left; width:40%">
-                    <img src="images/gulp-2x.png" style="width:25%; border: none; box-shadow:none;" />
+                    <img src="images/gulp-2x.png" style="width:30%; border: none; box-shadow:none;" />
                 </div>
             </div>
 
@@ -106,26 +106,26 @@
         <section>
             <h2>Getting Started</h2>
             <ul>
-                <li>Planning ahead</li>
+                <li>Plan ahead</li>
                 <li>File writing strategy</li>
-                <li>Deployment Strategy</li>
+                <li>Deployment strategy</li>
             </ul>
         </section>
         <section>
-            <h2>Plannings Ahead</h2>
+            <h2>Plan Ahead</h2>
             <ul>
-                <li>List what you want automated</li>
-                <li>Find modules to help with automation</li>
-                <li>What is considered a &quot;Failed&quot; build</li>
-                <li>Start making your Gulpfile</li>
-                <li>Train team (if applicable) on changes</li>
+                <li>List what you do manually</li>
+                <li>Find modules to help automate</li>
+                <li>What is considered a &quot;failed&quot; build</li>
+                <li>Start making your gulpfile</li>
+                <li>Keep updating</li>
             </ul>
         </section>
         <section>
             <h2>File Writing Strategy</h2>
             <ul>
                 <li>Move files</li>
-                <li>Overwrite sources</li>
+                <li>Edit sources</li>
                 <li>Add to sources</li>
             </ul>
         </section>
@@ -179,6 +179,20 @@ gulp.task('dev', ['moveFiles']);
                 <p>Review common functions used in Gulp which is the foundation to all Gulp files</p>
             </section>
             <section>
+                <h2>Tasks</h2>
+                <ul>
+                    <li>Specifies a friendly name to functionality</li>
+                    <li>Name cannot contain spaces</li>
+                    <li>Can be used as a dependency for other tasks</li>
+                    <li><strong>Must have a return</strong></li>
+                </ul>
+                <pre><code>
+gulp.task(name, [], function() {
+    return;
+});
+                    </code></pre>
+            </section>
+            <section>
                 <h2 style="text-transform: lowercase;">gulp.src</h2>
                 <ul>
                     <li>Emits files that match glob patterns</li>
@@ -188,19 +202,11 @@ gulp.task('dev', ['moveFiles']);
                 </ul>
                 <pre><code>
 gulp.src([
-  distPath + '/scripts/**', distPath2+'/**',
+  './scripts/**',
   './htdocs/+(app|fonts|js|css)/**',
   '!./htdocs/js/yui/**'
 ], {read: false})
                 </code></pre>
-            </section>
-            <section>
-                <h2 style="text-transform: lowercase;">gulp.dest</h2>
-                <ul>
-                    <li>Writes files to the relative path file system</li>
-                    <li>Emits the same stream that was sent into it</li>
-                    <li>Relative paths are calculated against base</li>
-                </ul>
             </section>
             <section>
                 <h2 style="text-transform: lowercase;">pipe</h2>
@@ -211,19 +217,18 @@ gulp.src([
                 </ul>
             </section>
             <section>
-                <h2>Tasks</h2>
+                <h2 style="text-transform: lowercase;">gulp.dest</h2>
                 <ul>
-                    <li>Specifies a friendly name to functionality</li>
-                    <li>Cannot contain spaces</li>
-                    <li>Returns when completed</li>
-                    <li>Can be used as a dependency for other tasks</li>
-                    <li><strong>Must have a return</strong></li>
+                    <li>Writes files to the relative path file system</li>
+                    <li>Emits the same stream that was sent into it</li>
+                    <li>Relative paths are calculated against base</li>
                 </ul>
                 <pre><code>
-gulp.task(name, [], function() {
-  return;
-});
-                    </code></pre>
+gulp.src('./js/**/*.js')
+  .pipe(gulp.dest('./dist/js')
+  .pipe(uglify())
+  .pipe(gulp.dest('./dist/js/min');
+                </code></pre>
             </section>
             <section>
                 <h2>Dependencies</h2>
@@ -252,18 +257,18 @@ gulp.task('build', ['cleanDist','distMove']);
             </section>
             <section>
                 <h2>Plugins</h2>
-                <p>Manipulate and returns vinyl streams with modified data</p>
+                <p>Manipulates and returns vinyl streams with modified data</p>
 
                 <pre><code>
 var gulp = require('gulp'),
     ngAnnotate = require('gulp-ng-annotate'),
     uglify = require('gulp-uglify');
 
-gulp.task('annotateCardBuild', ['buildAssets'], function() {
-  return gulp.src(cardBuildDistPath + '/cardBuild/buildApp.js')
+gulp.task('annotateCardBuild', function() {
+  return gulp.src('./cardBuild/buildApp.js')
     .pipe(ngAnnotate())
     .pipe(uglify())
-    .pipe(gulp.dest(cardBuildDistPath + '/cardBuild'));
+    .pipe(gulp.dest('./cardBuild'));
 });
                 </code></pre>
             </section>
@@ -271,8 +276,19 @@ gulp.task('annotateCardBuild', ['buildAssets'], function() {
         </section>
 
         <section>
-            <h2>SASS</h2>
-            <p>You can generate all your CSS with SASS/Compass.</p>
+            <h2>Gulp Watch</h2>
+            <p>Given a glob pattern Gulp can run tasks when a file in the pattern changes.</p>
+            <pre><code>
+gulp.task('watch', function () {
+  gulp.watch('./sass/**/*.scss', ['compass', 'inject-dev']);
+  gulp.watch('./js/**/*.js', ['minify-js', 'inject-dev']);
+});
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>CSS Compilation</h2>
+            <p>Compile all your CSS with your favorite pre-processor!</p>
             <pre><code>
 var plumber = require('gulp-plumber'),
     compass = require('gulp-compass');
@@ -297,17 +313,6 @@ gulp.task('minifyCSS', ['cardBuildLess'], function () {
   return gulp.src('./htdocs/css/**/*.css')
     .pipe(minifyCSS())
     .pipe(gulp.dest('./htdocs/css'));
-});
-                </code></pre>
-        </section>
-        <section>
-            <h2>Gulp Watch</h2>
-            <pre><code>
-var minifyCSS = require('gulp-minify-css');
-gulp.task('minifyCSS', ['cardBuildLess'], function () {
-return gulp.src('./htdocs/css/**/*.css')
-.pipe(minifyCSS())
-.pipe(gulp.dest('./htdocs/css'));
 });
                 </code></pre>
         </section>
@@ -424,14 +429,19 @@ gulp.task('cardBuildUnitTests', ['bower'], function(done) {
         </section>
         <section>
             <h2>Downside to Gulp</h2>
-            <ul>
-                <li>Slower builds</li>
-                <li>Multiple NPMs don't cascade</li>
-                <li>Relying on other plugins</li>
-                <li>Language changes</li>
-                <li>Awful error handling</li>
-                <li>One build to rule them all</li>
-            </ul>
+            <div>
+                <div style="float:left; width:60%;">
+                    <ul>
+                        <li>Slower builds</li>
+                        <li>Relying on 3rd party code</li>
+                        <li>Dreadful error handling</li>
+                        <li>One gulpfile to rule them all</li>
+                    </ul>
+                </div>
+                <div style="float:left; width:40%;">
+                    <img src="images/boo.gif" />
+                </div>
+            </div>
         </section>
 
         <section>
